@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+	<title>Transportation Alternatives Program Map</title>
+	
+	<link rel="stylesheet" type="text/css" href="tapstyle.css"/>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpEfVsRicw2xjhXLhNHUdlqJ6WZEQNCW0&sensor=false"></script>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript">
+	var map;
+	
+	function initialize() {
+		var mapStyle = [{
+			  'featureType': 'all',
+			  'elementType': 'all',
+			  'stylers': [{'visibility': 'off'}]
+			}, {
+			  'featureType': 'landscape',
+			  'elementType': 'geometry',
+			  'stylers': [{'visibility': 'on'}, {'color': '#fcfcfc'}]
+			}, {
+			  'featureType': 'water',
+			  'elementType': 'labels',
+			  'stylers': [{'visibility': 'off'}]
+			}, {
+			  'featureType': 'water',
+			  'elementType': 'geometry',
+			  'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
+			}];
+
+        var mapOptions = {
+			center: new google.maps.LatLng(40, -100),
+			zoom: 4,
+			styles: mapStyle
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+	
+	// Load shape states in geoJSON form
+		map.data.loadGeoJson('us-states.json');
+	
+
+
+
+	
+	
+	</script>
+</head>
+
+<body onload="initialize();">
+	<div id="map_canvas"></div>
+
+	
+</body>
+</html>
