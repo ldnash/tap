@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript">
 	var map;
+	var TAPjson;
 	
 	function initialize() {
 		var mapStyle = [{
@@ -40,120 +41,74 @@
         map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
 	
-	// Start building query that will create table.
-	
-	// Encode FT SQL request into HTML standard characters
-	var query = "SELECT 'State','USFS Region','FWS Region','NPS Region','Managing Agency','Funding Available via Statewide Grant Program','Local Match (%, if known)','Pre-Application Deadline (if applicable)','Final Application Deadline (if known)','Status of Statewide Program','Status_short','Status Summary','Contact','Contact E-mail','Contact Position','Contact Phone Number','geometry' FROM " +
-		'1x1Eqpt-ihqMyIchKWvLOlY1zYPb4gBLaNSe2T3Vc';
-	var encodedQuery = encodeURIComponent(query);
+		// Load shape states in geoJSON form
+		map.data.loadGeoJson('us-states.json', { idPropertyName : "name" });
+		
+		map.data.setStyle(styleFeature);
 
-	// Construct URL for query
-	var url = ['https://www.googleapis.com/fusiontables/v1/query'];
-	url.push('?sql=' + encodedQuery);
-	url.push('&key=AIzaSyDpEfVsRicw2xjhXLhNHUdlqJ6WZEQNCW0');
-	url.push('&callback=?');
-	console.log(url.join(''));
-
-	// Make call to FT API using JQuery
-	$.ajax({
-	  url: url.join(''),
-	  dataType: 'jsonp',
-	  success: function (data) {
-		var rows=data['rows'];
-		for (var i=0; i< rows.length; i++) {
-		
-		// Creates an array to hold Lat/Longs of each line
-		var newCoords  = [];
-		
-		var multi;
-		
-		// Obtains geometry.. last item in each row, within a JSON object.
-		var geometries = rows[i][rows[i].length-1]['geometries'];
-		
-		// Convert coords to Google Maps format. Must account for geoJSON storing coordinates differently based on line type.
-		if (geometries){
-			for (var j in geometries) {
-                newCoords.push(constructNewCoordinates(geometries[j]));
-				multi = true;
-              }
-			}
-		else {
-			geometries = rows[i][rows[i].length-1]['geometry'];
-			newCoords = constructNewCoordinates(geometries);
-			multi = false;
-		}		
-		
-		// Set color of line based on road status condition
-		var color = "#0000FF";
-		var s = rows[i][10];
-		if (s == 'Closed'){
-			color = "#FF0000";
-			}
-		else if (s == 'Expcted' || s == 'ExpectedFuture'){
-			color = "#FFFF00";
-			}
-		else if (s == 'Development'){
-			color = "#777777";
-			}
-		else if (s == 'NoResp'){
-			color = "#000000";
-			}
-		else if (s == 'Open'){
-			color = "#00FF00";
-			}
-		
-		// Construct info window. This relies on the order of rows in the merge table not changing in the future.
-		var iw = "<h2>" + rows[i][0] // State name
-		+ "<br> <br> <b>Status:</b>" + rows[i][9] // Status of statewide program		
-
-		var state = new google.maps.Polygon({
-			paths: newCoords,
-			strokeColor: '#FFFFFF',
-			strokeOpacity: 1.0,
-			strokeWeight: 2,
-			info: iw,
-			name: rows[i][1],
-			fillColor: color,
-			fillOpacity: 0.35
-		});
-		
-		// Adds listener for infowindow opening
-		google.maps.event.addListener(state, 'click', function(event) {
-			$("#infoBox").html(this.info);
-			});
-
-		state.setMap(map);
-
-	  
-	  
-	  }
-	  }});
-
+		// Listen for data load
+		google.maps.event.addListenerOnce(map.data, 'addfeature', function(){loadData()});	
 
 	}
 	
-	// Converts vanilla coordinate list into Google Maps coordinates. Src: https://developers.google.com/fusiontables/docs/samples/mouseover_map_styles
-	function constructNewCoordinates(polygon) {
-		var newCoordinates = [];
-		var coordinates = polygon['coordinates'][0];
-		for (var j=0; j< coordinates.length; j++) {
-			var lati = coordinates[j][1];
-			var longi = coordinates[j][0];
-			var k = new google.maps.LatLng(lati,longi);
-			newCoordinates.push(k);
-				}
+	function loadData(){
+	
+	map.data.forEach(function(feature){console.log(feature);});
+	
+	// Get data geoJSON
+		$.getJSON( "TAPWebList.json", function( data ) {
+			TAPjson = data;
+			console.log(TAPjson);
+			
+			for (i = 0; i < TAPjson.length; i++) {
 				
-		//console.log(newCoordinates);		
-		return newCoordinates
-	}	
+				// Get name of state from TAP list
+				var state = TAPjson[i].State;
+				console.log(state);
+				
+				// Pull up corresponding state geography and attach status to geography
+				
+				var curState = map.data.getFeatureById(state);
+				
+				curState.setProperty('Status', TAPjson[i]["Status of Statewide Program"]);
+				console.log(curState);
+						
+			}
+		});
 		
+			
+		}
+		
+	function styleFeature(feature){
+		var status = feature.getProperty('Status');
+		var color = '#666666';
+	
+		if (status == "Application Process Open or Forthcoming"){
+			var color = "#66FF33"}
+		if (status == "Initial Application Process Passed"){
+			var color = "#FF5050"}
+		if (status == "Process in Development, Expected 2014"){
+			var color = "#FF9933"}
+		if (status == "Still in Development"){
+			var color = "#333333"}
+	
+		return{
+			strokeWeight: 1,
+			strokeColor: '#fff',
+			zIndex: 1,
+			fillColor: color,
+			fillOpacity: 0.75,
+			visible: true
+		};
+	
+	}
+	
 	
 	</script>
 </head>
 
 <body onload="initialize();">
 	<div id="map_canvas"></div>
-	<div id="infoBox"></div>
 
 	
 </body>
