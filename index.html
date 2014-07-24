@@ -6,7 +6,8 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 	<title>Transportation Alternatives Program Map</title>
-	
+
+	<link href="bootstrap.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="tapstyle.css"/>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpEfVsRicw2xjhXLhNHUdlqJ6WZEQNCW0&sensor=false"></script>
 	<script type="text/javascript" src="jquery.js"></script>
@@ -36,7 +37,11 @@
         var mapOptions = {
 			center: new google.maps.LatLng(40, -100),
 			zoom: 4,
-			styles: mapStyle
+			styles: mapStyle,
+			scaleControl: false,
+			panControl: false,
+			streetViewControl: false,
+			zoomControl: true,
         };
         map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
@@ -47,7 +52,10 @@
 		map.data.setStyle(styleFeature);
 
 		// Listen for data load
-		google.maps.event.addListenerOnce(map.data, 'addfeature', function(){loadData()});	
+		google.maps.event.addListenerOnce(map.data, 'addfeature', function(){loadData()});
+
+		// Listen for click
+		google.maps.event.addListenerOnce(map.data, 'addfeature', function(event){onClick(event)});			
 
 	}
 	
@@ -103,12 +111,56 @@
 	
 	}
 	
+	function onClick(event){
+	
+	var content;
+	var 
+	event.feature.getProperty
+	
+	}
+	
 	
 	</script>
 </head>
 
 <body onload="initialize();">
-	<div id="map_canvas"></div>
+
+<div class = "container" id = "infoCont">
+<div class = "row">
+	<div class = "col-md-4" id="content_cell">
+		<div class="panel panel-default">
+			<div class="panel-body">
+			<h1>Transportation Alternatives Program Status</h1>
+			<h3>For Federal Lands Management Agencies</h3>
+			<p>
+			The Transportation Alternatives Program (TAP) is a federally funded program under MAP-21 that incorporates the following programs from previous transportation authorizations:
+			<ul>
+			<li>Transportation Enhancements (TE)</li>
+			<li>Recreational Trails Program (RTP)</li>
+			<li>Safe Routes to Schools (SRTS)</li>
+			</ul>
+			</p>
+			<p>
+			Federal Lands Management Agencies (FLMA) are eligible recipients for TAP funds. However, unlike other programs that can fund FLMA transportation, individual states and metropolitan planning organizations handle applications and distribute funds; they have varying application procedures and timelines.
+			</p>
+			<p>
+			This map consolidates information about state TAP program status. It includes the appropriate contact for each state, who may also be able to inform FLMAs about the TAP status of particular metropolitan areas.
+			</p>
+			</div>
+		</div>
+		<div class="panel panel-default" id = "info_panel">
+		</div>
+	</div>
+</div>
+</div>
+
+<div class = "container-fluid" id = "map_container">
+<div class = "row" id = "map_row">
+	<div class = "col-md-12" id = "map_col">
+		<div id="map_canvas"></div>
+	</div>
+</div>
+</div>
 
 	
 </body>
