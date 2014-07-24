@@ -14,6 +14,7 @@
 	<script type="text/javascript">
 	var map;
 	var TAPjson;
+	var featureList = [];
 	
 	function initialize() {
 		var mapStyle = [{
@@ -55,7 +56,7 @@
 		google.maps.event.addListenerOnce(map.data, 'addfeature', function(){loadData()});
 
 		// Listen for click
-		google.maps.event.addListenerOnce(map.data, 'addfeature', function(event){onClick(event)});			
+		map.data.addListener('click', function(event){onClick(event)});			
 
 	}
 	
@@ -78,9 +79,20 @@
 				
 				var curState = map.data.getFeatureById(state);
 				
-				curState.setProperty('Status', TAPjson[i]["Status of Statewide Program"]);
-				console.log(curState);
-						
+				// Iterate through each state property and attach to geography
+				for (j in TAPjson[i]) {
+				
+					// Create ordered list of state properties
+					var featureName = j
+					var featureValue = TAPjson[i][j];
+
+					if (i == 0){
+						featureList.push(featureName);
+					}					
+					
+					curState.setProperty(featureName, featureValue);			
+				}
+			console.log(curState);
 			}
 		});
 		
@@ -88,7 +100,7 @@
 		}
 		
 	function styleFeature(feature){
-		var status = feature.getProperty('Status');
+		var status = feature.getProperty('Status of Statewide Program');
 		var color = '#666666';
 	
 		if (status == "Application Process Open or Forthcoming"){
@@ -111,11 +123,20 @@
 	
 	}
 	
+	// When state is clicked
 	function onClick(event){
 	
-	var content;
-	var 
-	event.feature.getProperty
+	console.log(featureList);
+	
+	var content = '<h2>'+ event.feature.getId() + '</h2>';
+	
+	for (i in featureList){
+		var newItem = '<p><b>' + featureList[i] + ': </b>' + event.feature.getProperty(featureList[i]) + '</p>';
+		content += newItem;
+		}
+		
+	$('#info_body').html(content);
+	$('#info_panel').css('display', 'inherit' );
 	
 	}
 	
@@ -149,6 +170,8 @@
 			</div>
 		</div>
 		<div class="panel panel-default" id = "info_panel">
+			<div class="panel-body" id = "info_body">
+			</div>
 		</div>
 	</div>
 </div>
