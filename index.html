@@ -101,16 +101,23 @@
 		
 	function styleFeature(feature){
 		var status = feature.getProperty('Status of Statewide Program');
+		var context = 'info';
 		var color = '#666666';
 	
 		if (status == "Application Process Open or Forthcoming"){
-			var color = "#66FF33"}
+			var color = "#66FF33"
+			var context = 'success'}
 		if (status == "Initial Application Process Passed"){
-			var color = "#FF5050"}
+			var color = "#FF5050"
+			var context = 'danger'}
 		if (status == "Process in Development, Expected 2014"){
-			var color = "#FF9933"}
+			var color = "#FF9933"
+			var context = 'warning'}
 		if (status == "Still in Development"){
 			var color = "#333333"}
+			
+		feature.setProperty('Color',color);
+		feature.setProperty('Context',context);
 	
 		return{
 			strokeWeight: 1,
@@ -128,15 +135,22 @@
 	
 	console.log(featureList);
 	
-	var content = '<h2>'+ event.feature.getId() + '</h2>';
+	//get context color
+	var context = event.feature.getProperty('Context');
+	var mainStatus = event.feature.getProperty('Status of Statewide Program');
 	
+	var content = '<h3 class="bg-' + context + '">'+ event.feature.getId() + '</h3><h4 class="bg-' + context + '">'+ mainStatus + '</h4>';
+	
+	// Iterate through features in list for clicked state, displaying info for those that exist for this state
 	for (i in featureList){
 		var newItem = '<p><b>' + featureList[i] + ': </b>' + event.feature.getProperty(featureList[i]) + '</p>';
-		content += newItem;
+		if (event.feature.getProperty(featureList[i]) && i != 'Status of Statewide Program'){
+			content += newItem;
+			}
 		}
 		
 	$('#info_body').html(content);
-	$('#info_panel').css('display', 'inherit' );
+//	$('#info_panel').css('display', 'inherit' );
 	
 	}
 	
@@ -152,6 +166,7 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 			<h1>Transportation Alternatives Program Status</h1>
+			<span id = "info_body">
 			<h3>For Federal Lands Management Agencies</h3>
 			<p>
 			The Transportation Alternatives Program (TAP) is a federally funded program under MAP-21 that incorporates the following programs from previous transportation authorizations:
@@ -167,10 +182,11 @@
 			<p>
 			This map consolidates information about state TAP program status. It includes the appropriate contact for each state, who may also be able to inform FLMAs about the TAP status of particular metropolitan areas.
 			</p>
+			</span>
 			</div>
 		</div>
 		<div class="panel panel-default" id = "info_panel">
-			<div class="panel-body" id = "info_body">
+			<div class="panel-body">
 			</div>
 		</div>
 	</div>
