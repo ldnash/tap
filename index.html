@@ -90,7 +90,9 @@
 						featureList.push(featureName);
 					}					
 					
-					curState.setProperty(featureName, featureValue);			
+					if (curState){
+						curState.setProperty(featureName, featureValue);
+						}
 				}
 			console.log(curState);
 			}
