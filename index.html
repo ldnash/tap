@@ -146,13 +146,14 @@
 	// Iterate through features in list for clicked state, displaying info for those that exist for this state
 	for (i in featureList){
 		var newItem = '<p><b>' + featureList[i] + ': </b>' + event.feature.getProperty(featureList[i]) + '</p>';
-		if (event.feature.getProperty(featureList[i]) && i != 'Status of Statewide Program'){
+		if (event.feature.getProperty(featureList[i]) && featureList[i] != 'Status of Statewide Program' && featureList[i] != 'State'){
 			content += newItem;
 			}
 		}
 		
-	$('#info_body').html(content);
-//	$('#info_panel').css('display', 'inherit' );
+//	$('#info_body').html(content);
+	$('#panel_body').html(content);
+	$('#info_panel').css('display', 'inherit' );
 	
 	}
 	
@@ -164,7 +165,7 @@
 
 <div class = "container" id = "infoCont">
 <div class = "row">
-	<div class = "col-md-4" id="content_cell">
+	<div class = "col-md-6 col-md-offset-6 content_cell">
 		<div class="panel panel-default">
 			<div class="panel-body">
 			<h1>Transportation Alternatives Program Status</h1>
@@ -187,10 +188,17 @@
 			</span>
 			</div>
 		</div>
+	</div>
+	</div>
+	<div class = "row">
+	<div class = "col-md-4 col-md-offset-8 content_cell">
 		<div class="panel panel-default" id = "info_panel">
 			<div class="panel-body">
+				<span id = "panel_body">
+				</span>
 			</div>
 		</div>
+	</div>
 	</div>
 </div>
 </div>
