@@ -36,7 +36,7 @@
 			}];
 
         var mapOptions = {
-			center: new google.maps.LatLng(40, -100),
+			center: new google.maps.LatLng(45, -70),
 			zoom: 4,
 			styles: mapStyle,
 			scaleControl: false,
@@ -146,7 +146,7 @@
 	// Iterate through features in list for clicked state, displaying info for those that exist for this state
 	for (i in featureList){
 		var newItem = '<p><b>' + featureList[i] + ': </b>' + event.feature.getProperty(featureList[i]) + '</p>';
-		if (event.feature.getProperty(featureList[i]) && featureList[i] != 'Status of Statewide Program' && featureList[i] != 'State'){
+		if (event.feature.getProperty(featureList[i]) && featureList[i] != 'Status of Statewide Program' && featureList[i] != 'State' && featureList[i] != 'USFS Region' && featureList[i] != 'FWS Region' && featureList[i] != 'NPS Region'){
 			content += newItem;
 			}
 		}
@@ -165,25 +165,23 @@
 
 <div class = "container" id = "infoCont">
 <div class = "row">
-	<div class = "col-md-6 col-md-offset-6 content_cell">
+	<div class = "col-sm-6 col-sm-offset-6 content_cell">
 		<div class="panel panel-default">
 			<div class="panel-body">
 			<h1>Transportation Alternatives Program Status</h1>
 			<span id = "info_body">
 			<h3>For Federal Lands Management Agencies</h3>
 			<p>
-			The Transportation Alternatives Program (TAP) is a federally funded program under MAP-21 that incorporates the following programs from previous transportation authorizations:
+			The Transportation Alternatives Program (TAP) is a federal grant program that funds (among other eligible activities):
 			<ul>
-			<li>Transportation Enhancements (TE)</li>
-			<li>Recreational Trails Program (RTP)</li>
-			<li>Safe Routes to Schools (SRTS)</li>
+			<li>Construction, planning, and design of off-road and on-road trail facilities (transportation projects)</li>
+			<li>Construction of turnouts, overlooks, and viewing areas</li>
+			<li>Rehabilitation of historic transportation facilities (including bridges)</li>
+			<li>Construction of new and maintenance/restoration of existing recreation trails (recreation projects)</li>
 			</ul>
 			</p>
 			<p>
-			Federal Lands Management Agencies (FLMA) are eligible recipients for TAP funds. However, unlike other programs that can fund FLMA transportation, individual states and metropolitan planning organizations handle applications and distribute funds; they have varying application procedures and timelines.
-			</p>
-			<p>
-			This map consolidates information about state TAP program status. It includes the appropriate contact for each state, who may also be able to inform FLMAs about the TAP status of particular metropolitan areas.
+States and Metropolitan Planning Organizations (MPOs) administer TAP through annual or semi-annual competitive processes. Federal land management units are eligible applicants and encouraged to apply in most states. States and MPOs each have varying TAP application procedures and timelines. Recreation projects are awarded through a separate Recreational Trails Program (RTP) call for projects administered at the state level. This interactive map provides the statewide TAP program status. Consult with the listed state contact for MPO and RTP deadlines.			</p>
 			</p>
 			</span>
 			</div>
@@ -191,10 +189,13 @@
 	</div>
 	</div>
 	<div class = "row">
-	<div class = "col-md-4 col-md-offset-8 content_cell">
+	<div class = "col-sm-6 col-sm-offset-6 col-md-4 col-md-offset-8 content_cell">
 		<div class="panel panel-default" id = "info_panel">
 			<div class="panel-body">
 				<span id = "panel_body">
+					<h2 style = "color: #888888">
+					Click on a state to find out more about its status.
+					</h2>
 				</span>
 			</div>
 		</div>
@@ -205,7 +206,7 @@
 
 <div class = "container-fluid" id = "map_container">
 <div class = "row" id = "map_row">
-	<div class = "col-md-12" id = "map_col">
+	<div class = "col-sm-12" id = "map_col">
 		<div id="map_canvas"></div>
 	</div>
 </div>
