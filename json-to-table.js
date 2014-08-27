@@ -61,7 +61,7 @@ function ConvertJsonToTable(parsedJson, tableId, tableClassName, linkText)
     var classMarkup = tableClassName ? ' class="' + tableClassName + '"' :
                                        '';
 
-    var tbl = '<table border="1" cellpadding="1" cellspacing="1"' + idMarkup + classMarkup + '>{0}{1}</table>';
+    var tbl = '<table ' + idMarkup + classMarkup + '>{0}{1}</table>';
 
     //Patterns for table content
     var th = '<thead>{0}</thead>';

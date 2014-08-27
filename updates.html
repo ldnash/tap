@@ -7,8 +7,10 @@
 
 	<title>Transportation Alternatives Program Updates</title>
 	<link href="bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="tapstyle.css"/>
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="json-to-table.js"></script>
+	
 	
 	<script type="text/javascript">
 
@@ -17,7 +19,7 @@
 			TAPjson = data;
 			
 			//Use library to convert json table to HTML
-			var tableHtml = ConvertJsonToTable(TAPjson, 'jsonTable', null, 'Download');
+			var tableHtml = ConvertJsonToTable(TAPjson, 'update_table', null, 'Download');
 			
 			//Append HTML to body element
 			$('#table_body').html(tableHtml);

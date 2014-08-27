@@ -38,6 +38,10 @@ padding:0;
 
 }
 
+#update_table{
+width:300px;
+}
+
 .content_cell{
 z-index:100;
 }
