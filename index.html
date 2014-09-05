@@ -146,12 +146,6 @@
 	// Iterate through features in list for clicked state, displaying info for those that exist for this state
 	for (i in featureList){
 		var newItem = '<p><b>' + featureList[i] + ': </b>' + event.feature.getProperty(featureList[i]) + '</p>';
-		
-		// Exceptions to add dollar sign to funding field, remove unnecessary fields
-		if (featureList[i] == 'Funding Available via Statewide Grant Program'){
-			newItem = '<p><b>' + featureList[i] + ': </b>' + '$' + event.feature.getProperty(featureList[i]) + '</p>';
-		}
-		
 		if (event.feature.getProperty(featureList[i]) && featureList[i] != 'Status of Statewide Program' && featureList[i] != 'State' && featureList[i] != 'USFS Region' && featureList[i] != 'FWS Region' && featureList[i] != 'NPS Region'){
 			content += newItem;
 			}
