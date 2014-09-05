@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+	<title>Transportation Alternatives Program Updates</title>
+	<link href="bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="tapstyle.css"/>
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="json-to-table.js"></script>
+	
+	
+	<script type="text/javascript">
+
+	function loadTable(){
+		$.getJSON( "tap_updates.json", function( data ) {
+			TAPjson = data;
+			
+			//Use library to convert json table to HTML
+			var tableHtml = ConvertJsonToTable(TAPjson, 'update_table', null, 'Download');
+			
+			//Append HTML to body element
+			$('#table_body').html(tableHtml);
+			
+			
+	});
+	
+	}
+
+	</script>	
+	
+</head>
+
+<body id="table_body" onload="loadTable();">
+
+</body>
+
+</html>

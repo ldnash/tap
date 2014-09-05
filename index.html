@@ -43,7 +43,7 @@
 			scaleControl: false,
 			panControl: false,
 			streetViewControl: false,
-			zoomControl: true,
+			zoomControl: false,
         };
         map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
@@ -147,6 +147,12 @@
 	// Iterate through features in list for clicked state, displaying info for those that exist for this state
 	for (i in featureList){
 		var newItem = '<p><b>' + featureList[i] + ': </b>' + event.feature.getProperty(featureList[i]) + '</p>';
+		
+		// Exceptions to add dollar sign to funding field, remove unnecessary fields
+		if (featureList[i] == 'Funding Available via Statewide Grant Program'){
+			newItem = '<p><b>' + featureList[i] + ': </b>' + '$' + event.feature.getProperty(featureList[i]) + '</p>';
+		}
+		
 		if (event.feature.getProperty(featureList[i]) && featureList[i] != 'Status of Statewide Program' && featureList[i] != 'State' && featureList[i] != 'USFS Region' && featureList[i] != 'FWS Region' && featureList[i] != 'NPS Region'){
 			content += newItem;
 			}
@@ -189,7 +195,17 @@
 
 <!-- <div class = "container" id = "infoCont">
 <div class = "row">
-	<div class = "col-sm-6 col-sm-offset-6 content_cell">
+	<div class = "col-sm-2 content_cell">
+		<div class="panel panel-default" id="legend_panel">
+			<table class="table-condensed small">
+				<tr><td><img src="images/green.gif" height="20px" width="20px"/></td><td>Application Process Open or Forthcoming</td></tr>
+				<tr><td><img src="images/orange.gif" height="20px" width="20px"/></td><td>Process in Development, Expected Soon</td></tr>
+				<tr><td><img src="images/red.gif" height="20px" width="20px"/></td><td>Initial Application Process Passed</td></tr>
+				<tr><td><img src="images/grey.gif" height="20px" width="20px"/></td><td>Still in Development / Other</td></tr>
+			</table>
+		</div>
+	</div>
+	<div class = "col-sm-6 col-sm-offset-4 content_cell">
 		<div class="panel panel-default">
 			<div class="panel-body">
 			<h1>Transportation Alternatives Program Status</h1>
@@ -207,6 +223,7 @@
 			<p>
 States and Metropolitan Planning Organizations (MPOs) administer TAP through annual or semi-annual competitive processes. Federal land management units are eligible applicants and encouraged to apply in most states. States and MPOs each have varying TAP application procedures and timelines. Recreation projects are awarded through a separate Recreational Trails Program (RTP) call for projects administered at the state level. This interactive map provides the statewide TAP program status. Consult with the listed state contact for MPO and RTP deadlines.			</p>
 			</p>
+			<a href="table.html">Click here for accessible HTML table version of this map</a>
 			</span>
 			</div>
 		</div>
